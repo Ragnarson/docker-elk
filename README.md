@@ -34,6 +34,7 @@ Based on the official Docker images from Elastic:
    * [How can I tune the Kibana configuration?](#how-can-i-tune-the-kibana-configuration)
    * [How can I tune the Logstash configuration?](#how-can-i-tune-the-logstash-configuration)
    * [How can I tune the Elasticsearch configuration?](#how-can-i-tune-the-elasticsearch-configuration)
+   * [How can I tune the APM configuration?](#how-can-i-tune-the-apm-configuration)
    * [How can I scale out the Elasticsearch cluster?](#how-can-i-scale-up-the-elasticsearch-cluster)
 4. [Storage](#storage)
    * [How can I persist Elasticsearch data?](#how-can-i-persist-elasticsearch-data)
@@ -86,10 +87,12 @@ Give Kibana a few seconds to initialize, then access the Kibana web UI by hittin
 [http://localhost:5601](http://localhost:5601) with a web browser.
 
 By default, the stack exposes the following ports:
-* 5000: Logstash TCP input.
+* 5000: Logstash TCP input
+* 5601: Kibana
+* 8200: APM
 * 9200: Elasticsearch HTTP
 * 9300: Elasticsearch TCP transport
-* 5601: Kibana
+
 
 **WARNING**: If you're using `boot2docker`, you must access it via the `boot2docker` IP address instead of `localhost`.
 
@@ -131,6 +134,14 @@ $ curl -XPOST -D- 'http://localhost:5601/api/saved_objects/index-pattern' \
 
 The created pattern will automatically be marked as the default index pattern as soon as the Kibana UI is opened for the first time.
 
+### Import APM dashboards
+
+APM Server ships with preconfigured dashboards. Use the following command to install them:
+
+```console
+docker-compose run apm apm-server setup
+```
+
 ## Configuration
 
 **NOTE**: Configuration is not dynamically reloaded, you will need to restart the stack after any change in the
@@ -164,6 +175,10 @@ elasticsearch:
     network.host: "_non_loopback_"
     cluster.name: "my-cluster"
 ```
+
+### How can I tune the APM configuration?
+
+The APM configuration is stored in `apm/config/apm-server.yml`.
 
 ### How can I scale out the Elasticsearch cluster?
 

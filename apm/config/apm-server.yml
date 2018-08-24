@@ -1,0 +1,9 @@
+---
+## Default APM configuration from apm-server-docker.
+## from https://github.com/elastic/apm-server-docker/blob/master/build/apm-server/config/apm-server.yml
+#
+apm-server.host: "0.0.0.0:8200"
+
+output.elasticsearch.hosts: ['elasticsearch:9200']
+
+setup.kibana.host: "http://kibana:5601"
