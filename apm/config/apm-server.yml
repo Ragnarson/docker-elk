@@ -4,6 +4,31 @@
 #
 apm-server.host: "0.0.0.0:8200"
 
-output.elasticsearch.hosts: ['elasticsearch:9200']
+output.elasticsearch:
+  hosts: ['elasticsearch:9200']
+  indices:
+  - index: "apm-%{[beat.version]}-sourcemap"
+    when.contains:
+      processor.event: "sourcemap"
+
+  - index: "apm-%{[beat.version]}-error-%{+yyyy.MM.dd}"
+    when.contains:
+      processor.event: "error"
+
+  - index: "apm-%{[beat.version]}-transaction-%{+yyyy.MM.dd}"
+    when.contains:
+      processor.event: "transaction"
+
+  - index: "apm-%{[beat.version]}-span-%{+yyyy.MM.dd}"
+    when.contains:
+      processor.event: "span"
+
+  - index: "apm-%{[beat.version]}-metric-%{+yyyy.MM.dd}"
+    when.contains:
+      processor.event: "metric"
+
+  - index: "apm-%{[beat.version]}-onboarding-%{+yyyy.MM.dd}"
+    when.contains:
+      processor.event: "onboarding"
 
 setup.kibana.host: "http://kibana:5601"
